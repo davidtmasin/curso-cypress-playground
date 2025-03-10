@@ -207,4 +207,16 @@ describe('Cypress Playground', () => {
         .should('be.visible')
     })
   })
+
+    it.only('fornece uma data e certifica que a data correta esteja visível', () => {
+      const exampleDate = '2025-03-10'
+      
+      cy.get('input[type="date"]')
+        .should('be.visible')
+        .type(`${exampleDate}`)
+        .blur()
+      
+      cy.contains('p', `The date you've selected is: ${exampleDate}`)
+        .should('be.visible')
+    })
 })
