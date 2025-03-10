@@ -99,11 +99,81 @@ describe('Cypress Playground', () => {
 
   it('realiza o upload de um arquivo e verifica se seu nome aparece corretamente no parágrafo', () => {
     cy.get('#file').should('be.empty')
-    
+
     cy.get('input[type="file"]')
       .selectFile('./cypress/fixtures/example.json')
-    
+
     cy.contains('p', 'example.json')
       .should('be.visible')
+  })
+
+  it('intercepta a requisição acionada pelo botão "Get TODO" e certifica que uma lista será exibida', () => {
+    cy.intercept(
+      'GET',
+      'https://jsonplaceholder.typicode.com/todos/1'
+    ).as('getTodo')
+
+    cy.contains('button', 'Get TODO').click()
+
+    cy.wait('@getTodo')
+      .its('response.statusCode')
+      .should('be.equal', 200)
+
+    cy.contains('li', 'TODO ID: 1').should('be.visible')
+    cy.contains('li', 'Title: delectus aut autem').should('be.visible')
+    cy.contains('li', 'Completed: false').should('be.visible')
+    cy.contains('li', 'User ID: 1').should('be.visible')
+  })
+
+  it('intercepta a requisição acionada pelo botão "Get TODO", usando uma fixture como resposta da requisição e certifica que uma lista será exibida', () => {
+    const todo = require('../fixtures/todo')
+    cy.intercept(
+      'GET',
+      'https://jsonplaceholder.typicode.com/todos/1',
+      { fixture: 'todo' }
+    ).as('getTodo')
+
+    cy.contains('button', 'Get TODO').click()
+
+    cy.wait('@getTodo')
+      .its('response.statusCode')
+      .should('be.equal', 200)
+
+    cy.contains('li', `TODO ID: ${todo.id}`).should('be.visible')
+    cy.contains('li', `Title: ${todo.title}`).should('be.visible')
+    cy.contains('li', `Completed: ${todo.completed}`).should('be.visible')
+    cy.contains('li', `User ID: ${todo.userId}`).should('be.visible')
+  })
+
+  it('intercepta a requisição acionada pelo botão "Get TODO" e simula uma falha na API', () => {
+    cy.intercept(
+      'GET',
+      'https://jsonplaceholder.typicode.com/todos/1',
+      { statusCode: 500 }
+    ).as('serverFailure')
+
+    cy.contains('button', 'Get TODO').click()
+
+    cy.wait('@serverFailure')
+      .its('response.statusCode')
+      .should('be.equal', 500)
+
+    cy.contains('.error', 'Oops, something went wrong. Refresh the page and try again.')
+      .should('be.visible')
+  })
+
+  it('intercepta a requisição acionada pelo botão "Get TODO" e simula uma falha na rede', () => {
+    cy.intercept(
+      'GET',
+      'https://jsonplaceholder.typicode.com/todos/1',
+      { forceNetworkError: true }
+    ).as('networkError')
+
+    cy.contains('button', 'Get TODO').click()
+
+    cy.wait('@networkError')
+
+    cy.contains('.error', 'Oops, something went wrong. Check your internet connection, refresh the page, and try again.')
+      .should('be.visible') 
   })
 })
