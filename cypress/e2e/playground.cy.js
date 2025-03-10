@@ -177,7 +177,7 @@ describe('Cypress Playground', () => {
       .should('be.visible') 
   })
 
-  it.only('realiza uma requisição HTTP e verifica se o status code é 200', () => {
+  it('realiza uma requisição HTTP e verifica se o status code é 200', () => {
     cy.request(
       'GET',
       'https://jsonplaceholder.typicode.com/todos/1'
