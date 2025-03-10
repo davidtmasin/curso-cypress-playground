@@ -198,25 +198,52 @@ describe('Cypress Playground', () => {
   })
 
   Cypress._.times(10, index => {
-    it(`seleciona o valor ${index + 1} de 10 do input range`, () => {    
+    it(`seleciona o valor ${index + 1} de 10 do input range`, () => {
       cy.get('input[type="range"][id="level"]')
         .invoke('val', `${index + 1}`)
         .trigger('change')
-      
+
       cy.contains('p', `You're on level: ${index + 1}`)
         .should('be.visible')
     })
   })
 
-    it('fornece uma data e certifica que a data correta esteja visível', () => {
-      const exampleDate = '2025-03-10'
-      
-      cy.get('input[type="date"]')
-        .should('be.visible')
-        .type(`${exampleDate}`)
-        .blur()
-      
-      cy.contains('p', `The date you've selected is: ${exampleDate}`)
-        .should('be.visible')
-    })
+  it('fornece uma data e certifica que a data correta esteja visível', () => {
+    const exampleDate = '2025-03-10'
+
+    cy.get('input[type="date"]')
+      .should('be.visible')
+      .type(`${exampleDate}`)
+      .blur()
+
+    cy.contains('p', `The date you've selected is: ${exampleDate}`)
+      .should('be.visible')
+  })
+
+  it('fornece uma senha a partir de uma variável protegida', () => {
+    cy.get('#password-input input[type="password"]').as('inputPassword')
+    
+    cy.get('@inputPassword')
+    .should('be.visible')
+    .type(Cypress.env('user_password'), { log: false })
+    
+    cy.get('#show-password-checkbox')
+    .check()
+    
+    cy.get('#password-input input[type="text"]').as('inputText')
+    
+    cy.get('@inputPassword')
+      .should('not.exist')
+    cy.get('@inputText')
+      .should('be.visible')
+      .should('have.value', Cypress.env('user_password'))
+
+    cy.get('#show-password-checkbox')
+      .uncheck()
+
+    cy.get('@inputPassword')
+      .should('be.visible')
+    cy.get('@inputText')
+      .should('not.exist')
+  })
 })
