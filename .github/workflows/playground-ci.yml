@@ -9,7 +9,7 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@v6
         env:
-          USER_PASSWORD: ${{secrets.USER_PASSWORD}}
+          CYPRESS_USER_PASSWORD: ${{secrets.CYPRESS_USER_PASSWORD}}
         #   CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
         with:
           command: npm run test
