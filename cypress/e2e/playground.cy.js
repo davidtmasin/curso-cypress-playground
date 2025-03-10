@@ -225,7 +225,7 @@ describe('Cypress Playground', () => {
     
     cy.get('@inputPassword')
     .should('be.visible')
-    .type(Cypress.env('user_password'), { log: false })
+    .type(Cypress.env('USER_PASSWORD'), { log: false })
     
     cy.get('#show-password-checkbox')
     .check()
@@ -236,7 +236,7 @@ describe('Cypress Playground', () => {
       .should('not.exist')
     cy.get('@inputText')
       .should('be.visible')
-      .should('have.value', Cypress.env('user_password'))
+      .should('have.value', Cypress.env('USER_PASSWORD'))
 
     cy.get('#show-password-checkbox')
       .uncheck()
