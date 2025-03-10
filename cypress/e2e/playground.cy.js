@@ -176,4 +176,12 @@ describe('Cypress Playground', () => {
     cy.contains('.error', 'Oops, something went wrong. Check your internet connection, refresh the page, and try again.')
       .should('be.visible') 
   })
+
+  it.only('realiza uma requisição HTTP e verifica se o status code é 200', () => {
+    cy.request(
+      'GET',
+      'https://jsonplaceholder.typicode.com/todos/1'
+    ).its('status')
+     .should('be.equal', 200)
+  })
 })
