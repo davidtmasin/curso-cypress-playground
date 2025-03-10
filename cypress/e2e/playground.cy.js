@@ -208,7 +208,7 @@ describe('Cypress Playground', () => {
     })
   })
 
-    it.only('fornece uma data e certifica que a data correta esteja visível', () => {
+    it('fornece uma data e certifica que a data correta esteja visível', () => {
       const exampleDate = '2025-03-10'
       
       cy.get('input[type="date"]')
