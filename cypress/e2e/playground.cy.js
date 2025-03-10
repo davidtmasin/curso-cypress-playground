@@ -225,7 +225,7 @@ describe('Cypress Playground', () => {
     
     cy.get('@inputPassword')
     .should('be.visible')
-    .type(CYPRESS_USER_PASSWORD), { log: false })
+    .type(CYPRESS_USER_PASSWORD, { log: false })
     
     cy.get('#show-password-checkbox')
     .check()
