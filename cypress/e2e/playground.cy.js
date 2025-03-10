@@ -174,7 +174,7 @@ describe('Cypress Playground', () => {
     cy.wait('@networkError')
 
     cy.contains('.error', 'Oops, something went wrong. Check your internet connection, refresh the page, and try again.')
-      .should('be.visible') 
+      .should('be.visible')
   })
 
   it('realiza uma requisição HTTP e verifica se o status code é 200', () => {
@@ -182,6 +182,29 @@ describe('Cypress Playground', () => {
       'GET',
       'https://jsonplaceholder.typicode.com/todos/1'
     ).its('status')
-     .should('be.equal', 200)
+      .should('be.equal', 200)
+  })
+
+  Cypress._.times(10, () => {
+    it('seleciona valor aleatório para um input range', () => {
+      const randomNumber = Math.floor(Math.random() * 10) + 1
+      cy.get('input[type="range"][id="level"]')
+        .invoke('val', `${randomNumber}`)
+        .trigger('change')
+
+      cy.contains('p', `You're on level: ${randomNumber}`)
+        .should('be.visible')
+    })
+  })
+
+  Cypress._.times(10, index => {
+    it(`seleciona o valor ${index + 1} de 10 do input range`, () => {    
+      cy.get('input[type="range"][id="level"]')
+        .invoke('val', `${index + 1}`)
+        .trigger('change')
+      
+      cy.contains('p', `You're on level: ${index + 1}`)
+        .should('be.visible')
+    })
   })
 })
