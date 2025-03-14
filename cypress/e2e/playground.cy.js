@@ -1,5 +1,8 @@
+/// <reference types="cypress" />
 describe('Cypress Playground', () => {
   beforeEach(() => {
+    const now = new Date(Date.UTC(2025, 1, 18))
+    cy.clock(now)
     cy.visit('/index.html')
   })
 
@@ -223,16 +226,16 @@ describe('Cypress Playground', () => {
   // Esse caso de teste por enquanto ficará comentado até eu descobrir como fazer para funcionar o uso da variável no Github Actions
   // it('fornece uma senha a partir de uma variável protegida', () => {
   //   cy.get('#password-input input[type="password"]').as('inputPassword')
-    
+
   //   cy.get('@inputPassword')
   //   .should('be.visible')
   //   .type(CYPRESS_USER_PASSWORD, { log: false })
-    
+
   //   cy.get('#show-password-checkbox')
   //   .check()
-    
+
   //   cy.get('#password-input input[type="text"]').as('inputText')
-    
+
   //   cy.get('@inputPassword')
   //     .should('not.exist')
   //   cy.get('@inputText')
@@ -248,5 +251,21 @@ describe('Cypress Playground', () => {
   //     .should('not.exist')
   // })
 
-  
+  it('verifica a quantidade de itens de uma lista', () => {
+    const animalsList = [
+      "Camel", "Cat", "Caterpilla", "Cow", "Dog"
+    ]
+
+    cy.get('#animals li').should('have.length', 5)
+
+    Cypress._.times(5, index => {
+      cy.contains(`#animals li:nth-child(${index + 1})`, `${animalsList[index]}`)
+        .should('be.visible')      
+    })
+  })
+
+  it.only('congela o relógio do navegador e verifica a data exibida', () => {
+    cy.get('#date-section-paragraph > strong')
+      .should('have.text', '2025-02-18')
+  })
 })
