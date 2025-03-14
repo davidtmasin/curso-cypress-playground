@@ -290,4 +290,11 @@ describe("Cypress Playground", () => {
       "The provided code isn't correct. Please, try again."
     ).should("be.visible");
   });
+
+  it('faz o download de um arquivo texto, faz a leitura e verifica seu contéudo', () => {
+    cy.contains('a', 'Download a text file').click()
+
+    cy.readFile('cypress/downloads/example.txt')
+      .should('be.equal', 'Hello, World!')
+  });
 });
