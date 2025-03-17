@@ -125,7 +125,7 @@ describe("Cypress Playground", () => {
     cy.contains("li", "User ID: 1").should("be.visible");
   });
 
-  it.only('intercepta a requisição acionada pelo botão "Get TODO", usando uma fixture como resposta da requisição e certifica que uma lista será exibida', () => {
+  it('intercepta a requisição acionada pelo botão "Get TODO", usando uma fixture como resposta da requisição e certifica que uma lista será exibida', () => {
     const todo = require("../fixtures/todo");
 
     cy.intercept("GET", "https://jsonplaceholder.typicode.com/todos/1", {
