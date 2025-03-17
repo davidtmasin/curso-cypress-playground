@@ -125,8 +125,9 @@ describe("Cypress Playground", () => {
     cy.contains("li", "User ID: 1").should("be.visible");
   });
 
-  it('intercepta a requisição acionada pelo botão "Get TODO", usando uma fixture como resposta da requisição e certifica que uma lista será exibida', () => {
+  it.only('intercepta a requisição acionada pelo botão "Get TODO", usando uma fixture como resposta da requisição e certifica que uma lista será exibida', () => {
     const todo = require("../fixtures/todo");
+
     cy.intercept("GET", "https://jsonplaceholder.typicode.com/todos/1", {
       fixture: "todo",
     }).as("getTodo");
@@ -134,7 +135,6 @@ describe("Cypress Playground", () => {
     cy.contains("button", "Get TODO").click();
 
     cy.wait("@getTodo").its("response.statusCode").should("be.equal", 200);
-
     cy.contains("li", `TODO ID: ${todo.id}`).should("be.visible");
     cy.contains("li", `Title: ${todo.title}`).should("be.visible");
     cy.contains("li", `Completed: ${todo.completed}`).should("be.visible");
@@ -291,10 +291,12 @@ describe("Cypress Playground", () => {
     ).should("be.visible");
   });
 
-  it('faz o download de um arquivo texto, faz a leitura e verifica seu contéudo', () => {
-    cy.contains('a', 'Download a text file').click()
+  it("faz o download de um arquivo texto, faz a leitura e verifica seu contéudo", () => {
+    cy.contains("a", "Download a text file").click();
 
-    cy.readFile('cypress/downloads/example.txt')
-      .should('be.equal', 'Hello, World!')
+    cy.readFile("cypress/downloads/example.txt").should(
+      "be.equal",
+      "Hello, World!"
+    );
   });
 });
